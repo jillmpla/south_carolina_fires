@@ -1,0 +1,91 @@
+/* Prevent horizontal scrolling */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensures the App container does not overflow */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Footer styling */
+.app-footer {
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  max-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Ensures footer text does not cause overflow */
+.app-footer span {
+  white-space: normal;
+  text-align: center;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Footer links */
+.app-footer a {
+  color: #ff4500;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive fix for mobile */
+@media (max-width: 600px) {
+  .app-footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+/* Ensures h1 does not cause overflow */
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #e03b3b;
+  text-align: center;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
