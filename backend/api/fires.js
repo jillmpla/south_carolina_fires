@@ -1,8 +1,7 @@
 const express = require("express");
 
-//allow both frontend and backend domains from vercel
 const corsOptions = {
-    origin: ["https://southcarolinafires.com", "https://south-carolina-fires.vercel.app"],
+    origin: "*", //allow requests from any domain
     methods: "GET",
     allowedHeaders: ["Content-Type"]
 };
