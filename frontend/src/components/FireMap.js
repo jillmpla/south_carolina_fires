@@ -24,10 +24,10 @@ const FireMap = () => {
 
     useEffect(() => {
         //Fetch fire data from the deployed API
-        axios.get(`${API_URL}/api/fires`)
+        axios.get(`${API_URL}/api/fires`.replace(/([^:]\/)\/+/g, "$1"))
             .then(response => {
-                //Filter fires where FRP > 5
-                const highRiskFires = response.data.fires.filter(fire => fire.frp > 5);
+                //Filter fires where FRP > 10
+                const highRiskFires = response.data.fires.filter(fire => fire.frp > 10);
                 setFires(highRiskFires);
             })
             .catch(error => console.error("🚨 Error fetching fire data:", error));
