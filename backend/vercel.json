@@ -10,9 +10,14 @@
     {
       "src": "/api/fires",
       "dest": "/api/fires.js"
+    },
+    {
+      "src": "/api/update-fires",
+      "dest": "/api/fires.js"
     }
   ]
 }
+
 
 
 
