@@ -6,8 +6,7 @@ const pool = require("../database");
 const app = express();
 app.use(cors());
 
-//API Route - Get fires from PostgreSQL (Supabase)
-app.get("/fires", async (req, res) => {
+app.get("/api/fires", async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT * FROM fires");
         res.json({ fires: rows });
@@ -18,6 +17,7 @@ app.get("/fires", async (req, res) => {
 });
 
 module.exports = app;
+
 
 
 
