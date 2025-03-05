@@ -1,23 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const db = require("../database");
-const { fetchFireData } = require("../fireService");
+const pool = require("../database");
 
 const app = express();
 app.use(cors());
 
 app.get("/api/fires", async (req, res) => {
     try {
-        const rows = await new Promise((resolve, reject) => {
-            db.all("SELECT * FROM fires", [], (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows);
-            });
-        });
-
-        await fetchFireData();
-
+        const { rows } = await pool.query("SELECT * FROM fires");
         res.json({ fires: rows });
     } catch (error) {
         console.error("🚨 Database Error:", error);
@@ -26,6 +17,7 @@ app.get("/api/fires", async (req, res) => {
 });
 
 module.exports = app;
+
 
 
 
