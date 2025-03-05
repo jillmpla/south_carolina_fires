@@ -1,5 +1,14 @@
 const express = require("express");
-const cors = require("cors");
+
+//allow both frontend and backend domains from vercel
+const corsOptions = {
+    origin: ["https://southcarolinafires.com", "https://south-carolina-fires.vercel.app"],
+    methods: "GET",
+    allowedHeaders: ["Content-Type"]
+};
+
+app.use(cors(corsOptions));
+
 const pool = require("../database");
 const { fetchFireData } = require("../fireService");
 
