@@ -9,7 +9,7 @@ function App() {
             <h1>South Carolina Wildfire Alert: Moderate to High-Intensity Fires</h1>
 
             <div className="app-footer">
-                <span>🔥 Fires with FRP 10 - 15 MW are moderate and 15+ MW are high-intensity. 🔥</span>
+                <span>🔥 Fires with FRP 5 - 15 MW are moderate and 15+ MW are high-intensity. 🔥</span>
                 <span>
         🔥 Data Source:{" "}
                     <a href="https://firms.modaps.eosdis.nasa.gov/" target="_blank" rel="noopener noreferrer">

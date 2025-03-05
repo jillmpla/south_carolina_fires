@@ -5,8 +5,7 @@ import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import fireHighIconSrc from "./fire-high.svg";
 
-/////////////////////Unique to Vercel/////////////////////
-const API_URL = "https://south-carolina-fires.vercel.app";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const southCarolinaBounds = [
     [31.5, -84], //Southwest
@@ -27,8 +26,8 @@ const FireMap = () => {
         //Fetch fire data from the deployed API
         axios.get(`${API_URL}/api/fires?t=${Date.now()}`.replace(/([^:]\/)\/+/g, "$1"))
             .then(response => {
-                //Filter fires where FRP > 10
-                const highRiskFires = response.data.fires.filter(fire => fire.frp > 10);
+                //Filter fires where FRP > 5
+                const highRiskFires = response.data.fires.filter(fire => fire.frp > 5);
                 setFires(highRiskFires);
             })
             .catch(error => console.error("Error fetching fire data:", error));
