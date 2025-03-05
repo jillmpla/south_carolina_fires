@@ -5,7 +5,7 @@ import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import fireHighIconSrc from "./fire-high.svg";
 
-const API_URL = "https://your-backend.vercel.app"; //Replace with your actual Vercel backend URL
+const API_URL = process.env.REACT_APP_API_URL;
 
 const southCarolinaBounds = [
     [31.5, -84], //Southwest
