@@ -11,6 +11,9 @@
       "src": "/api/fires",
       "dest": "/api/fires.js"
     }
-  ]
+  ],
+  "env": {
+    "NASA_API_KEY": "@NASA_API_KEY"
+  }
 }
 
