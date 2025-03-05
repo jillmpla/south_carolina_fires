@@ -1,4 +1,3 @@
-//require("dotenv").config(); ->only used locally
 const express = require("express");
 const cors = require("cors");
 const pool = require("../database");
@@ -7,7 +6,6 @@ const { fetchFireData } = require("../fireService");
 const app = express();
 app.use(cors());
 
-//get fires from Supabase
 app.get("/api/fires", async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT * FROM fires");
@@ -18,19 +16,22 @@ app.get("/api/fires", async (req, res) => {
     }
 });
 
-//manually Refresh Fire Data (using daily UptimeRobot Cron Job)
 app.get("/api/update-fires", async (req, res) => {
     try {
         console.log("🔄 Fetching new fire data...");
+        if (!fetchFireData) {
+            throw new Error("fetchFireData is not defined! Check import.");
+        }
         await fetchFireData();
         res.json({ message: "Fire data updated successfully!" });
     } catch (error) {
         console.error("🚨 Error updating fire data:", error);
-        res.status(500).json({ error: "Failed to update fire data" });
+        res.status(500).json({ error: error.message });
     }
 });
 
 module.exports = app;
+
 
 
 
