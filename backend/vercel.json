@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "api/fires.js",
-      "use": "@vercel/node@20"
+      "use": "@vercel/node"
     }
   ],
   "routes": [
