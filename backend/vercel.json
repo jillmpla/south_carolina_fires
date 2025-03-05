@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "functions": {
-    "api/fires.js": {
-      "runtime": "@vercel/node"
+  "builds": [
+    {
+      "src": "api/fires.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/api/fires",
@@ -12,6 +13,7 @@
     }
   ]
 }
+
 
 
 
