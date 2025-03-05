@@ -20,6 +20,6 @@ pool.query(`
         frp REAL,
         daynight TEXT
     )
-`).catch(err => console.error("🚨 Database Error:", err));
+`).catch(err => console.error("Database Error:", err));
 
 module.exports = pool;
