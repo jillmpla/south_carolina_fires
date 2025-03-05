@@ -1,18 +1,12 @@
 const axios = require("axios");
 const turf = require("@turf/turf");
-const pool = require("./database"); //PostgreSQL (via Supabase)
+const pool = require("./database"); //postgreSQL (via supabase)
 
-const NASA_API_KEY = process.env.NASA_API_KEY;
-if (!NASA_API_KEY) {
-    console.error("NASA API Key is missing! Make sure it's in the .env file.");
-    process.exit(1);
-}
-
-//Fetch new fire data from NASA FIRMS API
+//fetch new fire data from NASA FIRMS API
 async function fetchFireData() {
     try {
         console.log("Fetching new NASA FIRMS fire data...");
-        const url = `https://firms.modaps.eosdis.nasa.gov/api/country/csv/${NASA_API_KEY}/VIIRS_SNPP_NRT/USA/3`;
+        const url = `https://firms.modaps.eosdis.nasa.gov/api/country/csv/${process.env.NASA_API_KEY}/VIIRS_SNPP_NRT/USA/3`;
         const response = await axios.get(url);
 
         if (!response.data) {
@@ -38,8 +32,8 @@ async function fetchFireData() {
             })
             .filter(fire => fire.latitude && fire.longitude);
 
-        //Delete old fire data before inserting new data
-        console.log("🗑 Clearing old fire data...");
+        //delete old fire data before inserting new data
+        console.log("Clearing old fire data...");
         await pool.query("DELETE FROM fires");
 
         console.log(`Inserting ${fires.length} new fire records...`);
@@ -71,4 +65,5 @@ async function fetchFireData() {
 }
 
 module.exports = { fetchFireData };
+
 
