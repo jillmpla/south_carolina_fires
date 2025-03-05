@@ -7,7 +7,6 @@ const { fetchFireData } = require("../fireService");
 const app = express();
 app.use(cors());
 
-// API Route: Get fires from SQLite
 app.get("/api/fires", async (req, res) => {
     try {
         const rows = await new Promise((resolve, reject) => {
@@ -16,6 +15,9 @@ app.get("/api/fires", async (req, res) => {
                 else resolve(rows);
             });
         });
+
+        await fetchFireData();
+
         res.json({ fires: rows });
     } catch (error) {
         console.error("🚨 Database Error:", error);
@@ -23,10 +25,6 @@ app.get("/api/fires", async (req, res) => {
     }
 });
 
-// Fetch data on first request (since setInterval won't work in Vercel)
-fetchFireData();
-
-// Export the app for Vercel (serverless)
 module.exports = app;
 
 
