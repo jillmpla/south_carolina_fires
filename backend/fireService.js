@@ -1,6 +1,17 @@
 const axios = require("axios");
 const turf = require("@turf/turf");
-const pool = require("./database"); //postgreSQL (via supabase)
+const pool = require("./database");
+const fs = require("fs");
+const path = require("path");
+
+//load South Carolina border GeoJSON
+const geojsonPath = path.join(__dirname, "southCarolinaBorder.geojson");
+if (!fs.existsSync(geojsonPath)) {
+    console.error("ERROR: GeoJSON file not found at:", geojsonPath);
+    process.exit(1);
+}
+const southCarolinaBorder = JSON.parse(fs.readFileSync(geojsonPath, "utf8"));
+const southCarolinaPolygon = southCarolinaBorder.geometry;
 
 //fetch new fire data from NASA FIRMS API
 async function fetchFireData() {
@@ -14,13 +25,23 @@ async function fetchFireData() {
         }
 
         const csvRows = response.data.split("\n");
+
+        //filter only fires inside South Carolina
         const fires = csvRows.slice(1)
             .filter(row => row.trim() !== "")
             .map(row => {
                 const columns = row.split(",");
+                const latitude = parseFloat(columns[1]);
+                const longitude = parseFloat(columns[2]);
+
+                if (!latitude || !longitude) return null;
+
+                const firePoint = turf.point([longitude, latitude]);
+                if (!turf.booleanPointInPolygon(firePoint, southCarolinaPolygon)) return null; //keep only fires inside SC
+
                 return {
-                    latitude: parseFloat(columns[1]),
-                    longitude: parseFloat(columns[2]),
+                    latitude,
+                    longitude,
                     brightness: parseFloat(columns[3]) || null,
                     confidence: columns[10] || "Unknown",
                     acq_date: columns[6] || "Unknown",
@@ -30,7 +51,7 @@ async function fetchFireData() {
                     daynight: columns[14] === "D" ? "Daytime" : "Nighttime"
                 };
             })
-            .filter(fire => fire.latitude && fire.longitude);
+            .filter(fire => fire !== null); //store only valid SC fires
 
         //delete old fire data before inserting new data
         console.log("Clearing old fire data...");
@@ -65,5 +86,3 @@ async function fetchFireData() {
 }
 
 module.exports = { fetchFireData };
-
-
