@@ -6,7 +6,7 @@ const pool = require("./database"); //postgreSQL (via supabase)
 async function fetchFireData() {
     try {
         console.log("Fetching new NASA FIRMS fire data...");
-        const url = `https://firms.modaps.eosdis.nasa.gov/api/country/csv/${process.env.NASA_API_KEY}/VIIRS_SNPP_NRT/USA/3`;
+        const url = `https://firms.modaps.eosdis.nasa.gov/api/country/csv/${process.env.NASA_API_KEY}/VIIRS_SNPP_NRT/USA/1`;
         const response = await axios.get(url);
 
         if (!response.data) {
