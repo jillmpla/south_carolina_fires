@@ -1,13 +1,10 @@
-require("dotenv").config();
+//require("dotenv").config(); ->only used locally
 const express = require("express");
 const cors = require("cors");
 const pool = require("../database");
 
 const app = express();
 app.use(cors());
-
-//Debugging: Print DATABASE_URL in Vercel logs
-console.log("DATABASE_URL in Vercel:", process.env.DATABASE_URL);
 
 //API Route - Get fires from PostgreSQL (Supabase)
 app.get("/fires", async (req, res) => {
