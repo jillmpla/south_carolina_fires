@@ -1,18 +1,23 @@
 const express = require("express");
-
-const corsOptions = {
-    origin: "*", //allow requests from any domain
-    methods: "GET",
-    allowedHeaders: ["Content-Type"]
-};
-
-app.use(cors(corsOptions));
-
+const cors = require("cors");
 const pool = require("../database");
 const { fetchFireData } = require("../fireService");
 
 const app = express();
-app.use(cors());
+
+//set CORS headers manually to allow frontend requests
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); //allow requests from any domain
+    res.header("Access-Control-Allow-Methods", "GET");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
+});
+const corsOptions = {
+    origin: "*",
+    methods: "GET",
+    allowedHeaders: ["Content-Type"]
+};
+app.use(cors(corsOptions));
 
 app.get("/api/fires", async (req, res) => {
     try {
