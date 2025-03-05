@@ -22,6 +22,7 @@ app.use(cors(corsOptions));
 app.get("/api/fires", async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT * FROM fires");
+        res.setHeader("Cache-Control", "public, max-age=1800, must-revalidate"); //cache for 30 minutes
         res.json({ fires: rows });
     } catch (error) {
         console.error("Database Error:", error);
