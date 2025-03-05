@@ -6,7 +6,8 @@ const pool = require("../database");
 const app = express();
 app.use(cors());
 
-app.get("/api/fires", async (req, res) => {
+//API Route - Get fires from PostgreSQL (Supabase)
+app.get("/fires", async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT * FROM fires");
         res.json({ fires: rows });
