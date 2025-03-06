@@ -75,26 +75,37 @@ const FireMap = () => {
                     icon={highRiskFireIcon}
                 >
                     <Popup>
-                        <strong style={{ fontSize: "1.2em" }}>🔥 <span style={{ color: "#994C00" }}>Moderate</span> to<span style={{color: "#600000"}}> High-Risk</span> Fire</strong><br/>
-                        <strong style={{color: "#b22222"}}>Fire Radiative Power (FRP):</strong> {fire.frp ? `${fire.frp} MW` : "Unknown"}<br/>
+                        <strong style={{fontSize: "1.2em"}}>🔥 <span style={{color: "#994C00"}}>Moderate</span> to<span
+                            style={{color: "#600000"}}> High-Risk</span> Fire</strong><br/>
+                        <strong style={{color: "#b22222"}}>Fire Radiative Power
+                            (FRP):</strong> {fire.frp ? `${fire.frp} MW` : "Unknown"}<br/>
                         <strong>Latitude:</strong> {fire.latitude} <br/>
                         <strong>Longitude:</strong> {fire.longitude} <br/>
                         <strong>Brightness Temperature:</strong> {fire.brightness} Kelvin (K)<br/>
-                        <strong>Detection Certainty:</strong> {fire.confidence === "h" ? "High" : fire.confidence === "n" ? "Nominal" : fire.confidence === "l" ? "Low" : "Unknown"}<br/>
+                        <strong>Detection
+                            Certainty:</strong> {fire.confidence === "h" ? "High" : fire.confidence === "n" ? "Nominal" : fire.confidence === "l" ? "Low" : "Unknown"}<br/>
                         <strong>Detection Date:</strong> {fire.acq_date}{" "}<br/>
+
                         <strong>Detection Time:</strong> {(() => {
-                        const utcTime = fire.acq_time.padStart(4, '0');
+                        const utcTime = fire.acq_time ? fire.acq_time.padStart(4, '0') : "0000";
                         const hours = parseInt(utcTime.substring(0, 2), 10);
                         const minutes = utcTime.substring(2);
-                        const date = new Date(`${fire.acq_date}T${hours}:${minutes}:00Z`);
+
+                        const validDate = fire.acq_date ? `${fire.acq_date}T${hours}:${minutes}:00Z` : null;
+                        const date = validDate ? new Date(validDate) : null;
+
                         const options = {
                             timeZone: "America/New_York",
                             hour: "2-digit",
                             minute: "2-digit",
                             hour12: true
                         };
-                        return new Intl.DateTimeFormat("en-US", options).format(date);
+
+                        return date && !isNaN(date.getTime())
+                            ? new Intl.DateTimeFormat("en-US", options).format(date)
+                            : "Unknown Time";
                     })()} ET<br/>
+
                     </Popup>
                 </Marker>
             ))}
