@@ -19,6 +19,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+//how to get the list of fires
 app.get("/api/fires", async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT * FROM fires");
@@ -30,6 +31,7 @@ app.get("/api/fires", async (req, res) => {
     }
 });
 
+//how to update fires
 app.get("/api/update-fires", async (req, res) => {
     try {
         console.log("Fetching new fire data...");

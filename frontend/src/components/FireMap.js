@@ -24,7 +24,7 @@ const FireMap = () => {
     useEffect(() => {
         const lastFetch = localStorage.getItem("lastFireDataFetch");
         const now = Date.now();
-        const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        const twentyFourHours = 24 * 60 * 60 * 1000; //24 hours in milliseconds
 
         //only fetch if 24 hours have passed since the last fetch
         if (!lastFetch || now - lastFetch > twentyFourHours) {
@@ -32,7 +32,7 @@ const FireMap = () => {
 
             axios.get(`${API_URL}/api/fires`.replace(/([^:]\/)\/+/g, "$1"))
                 .then(response => {
-                    const highRiskFires = response.data.fires.filter(fire => fire.frp > 4);
+                    const highRiskFires = response.data.fires.filter(fire => fire.frp > 2);
                     setFires(highRiskFires);
 
                     //save the last fetch timestamp
