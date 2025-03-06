@@ -23,6 +23,36 @@ const FireMap = () => {
     const [borderData, setBorderData] = useState(null);
 
     useEffect(() => {
+        const lastFetch = localStorage.getItem("lastFireDataFetch");
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000; //24 hours in milliseconds
+
+        //only fetch if 24 hours have passed since the last fetch
+        if (!lastFetch || now - lastFetch > twentyFourHours) {
+            console.log("Fetching fresh fire data...");
+
+            axios.get(`${API_URL}/api/fires`.replace(/([^:]\/)\/+/g, "$1"))
+                .then(response => {
+                    const highRiskFires = response.data.fires.filter(fire => fire.frp > 4);
+                    setFires(highRiskFires);
+
+                    //save the last fetch timestamp
+                    localStorage.setItem("lastFireDataFetch", now);
+                    localStorage.setItem("cachedFireData", JSON.stringify(highRiskFires));
+                })
+                .catch(error => console.error("🚨 Error fetching fire data:", error));
+        } else {
+            //load cached data to avoid unnecessary API requests
+            console.log("Using cached fire data...");
+            const cachedData = localStorage.getItem("cachedFireData");
+            if (cachedData) {
+                setFires(JSON.parse(cachedData));
+            }
+        }
+    }, []);
+
+
+    /* useEffect(() => {
         //Fetch fire data from the deployed API
         axios.get(`${API_URL}/api/fires?t=${Date.now()}`.replace(/([^:]\/)\/+/g, "$1"))
             .then(response => {
@@ -30,7 +60,9 @@ const FireMap = () => {
                 const highRiskFires = response.data.fires.filter(fire => fire.frp > 4);
                 setFires(highRiskFires);
             })
-            .catch(error => console.error("Error fetching fire data:", error));
+            .catch(error => console.error("Error fetching fire data:", error)); */
+
+
 
         //Fetch South Carolina border GeoJSON
         fetch("/southCarolinaBorder.geojson")
