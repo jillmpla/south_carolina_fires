@@ -12,8 +12,7 @@ const southCarolinaBounds = [
     [35.8, -78]  //Northeast
 ];
 
-//Fire Icon (FRP > 5)
-const highRiskFireIcon = new L.Icon({
+const highRiskFireIcon = new L.Icon({ //fire icon
     iconUrl: fireHighIconSrc,
     iconSize: [30, 30]
 });
@@ -25,7 +24,7 @@ const FireMap = () => {
     useEffect(() => {
         const lastFetch = localStorage.getItem("lastFireDataFetch");
         const now = Date.now();
-        const twentyFourHours = 24 * 60 * 60 * 1000; //24 hours in milliseconds
+        const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
         //only fetch if 24 hours have passed since the last fetch
         if (!lastFetch || now - lastFetch > twentyFourHours) {
@@ -49,22 +48,8 @@ const FireMap = () => {
                 setFires(JSON.parse(cachedData));
             }
         }
-    }, []);
 
-
-    /* useEffect(() => {
-        //Fetch fire data from the deployed API
-        axios.get(`${API_URL}/api/fires?t=${Date.now()}`.replace(/([^:]\/)\/+/g, "$1"))
-            .then(response => {
-                //Filter fires where FRP > 4
-                const highRiskFires = response.data.fires.filter(fire => fire.frp > 4);
-                setFires(highRiskFires);
-            })
-            .catch(error => console.error("Error fetching fire data:", error)); */
-
-
-
-        //Fetch South Carolina border GeoJSON
+        //fetch South Carolina border GeoJSON
         fetch("/southCarolinaBorder.geojson")
             .then(response => response.json())
             .then(data => setBorderData(data))
