@@ -85,27 +85,6 @@ const FireMap = () => {
                         <strong>Detection
                             Certainty:</strong> {fire.confidence === "h" ? "High" : fire.confidence === "n" ? "Nominal" : fire.confidence === "l" ? "Low" : "Unknown"}<br/>
                         <strong>Detection Date:</strong> {fire.acq_date}{" "}<br/>
-
-                        <strong>Detection Time:</strong> {(() => {
-                        const utcTime = fire.acq_time ? fire.acq_time.padStart(4, '0') : "0000";
-                        const hours = parseInt(utcTime.substring(0, 2), 10);
-                        const minutes = utcTime.substring(2);
-
-                        const validDate = fire.acq_date ? `${fire.acq_date}T${hours}:${minutes}:00Z` : null;
-                        const date = validDate ? new Date(validDate) : null;
-
-                        const options = {
-                            timeZone: "America/New_York",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true
-                        };
-
-                        return date && !isNaN(date.getTime())
-                            ? new Intl.DateTimeFormat("en-US", options).format(date)
-                            : "Unknown Time";
-                    })()} ET<br/>
-
                     </Popup>
                 </Marker>
             ))}
