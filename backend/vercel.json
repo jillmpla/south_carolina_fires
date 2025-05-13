@@ -2,22 +2,29 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/fires.js",
+      "src": "backend/api/fires.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "frontend/public/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/fires",
-      "dest": "/api/fires.js"
+      "dest": "backend/api/fires.js"
     },
     {
       "src": "/api/update-fires",
-      "dest": "/api/fires.js"
+      "dest": "backend/api/fires.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/public/$1"
     }
   ]
 }
-
 
 
 
