@@ -4,85 +4,83 @@ const pool = require("./database");
 const fs = require("fs");
 const path = require("path");
 
-//load South Carolina border GeoJSON
+//load SC border
 const geojsonPath = path.join(__dirname, "southCarolinaBorder.geojson");
 if (!fs.existsSync(geojsonPath)) {
-    console.error("ERROR: GeoJSON file not found at:", geojsonPath);
-    process.exit(1);
+  console.error("ERROR: GeoJSON file not found at:", geojsonPath);
+  process.exit(1);
 }
-const southCarolinaBorder = JSON.parse(fs.readFileSync(geojsonPath, "utf8"));
-const southCarolinaPolygon = southCarolinaBorder.geometry;
+const scFeature = JSON.parse(fs.readFileSync(geojsonPath, "utf8"));
+//use a Feature object for turf
+const scPolygon = scFeature.type === "Feature" ? scFeature : turf.feature(scFeature.geometry);
 
-//fetch new fire data from NASA FIRMS API
 async function fetchFireData() {
-    try {
-        console.log("Fetching new NASA FIRMS fire data...");
-        const url = `https://firms.modaps.eosdis.nasa.gov/api/country/csv/${process.env.NASA_API_KEY}/VIIRS_SNPP_NRT/USA/2`;
-        const response = await axios.get(url);
+  try {
+    console.log("Fetching new NASA FIRMS fire data...");
+    const url = `https://firms.modaps.eosdis.nasa.gov/api/country/csv/${process.env.NASA_API_KEY}/VIIRS_SNPP_NRT/USA/2`;
+    const response = await axios.get(url, { responseType: "text" });
 
-        if (!response.data) {
-            throw new Error("Invalid response format from API");
-        }
-
-        const csvRows = response.data.split("\n");
-
-        //filter only fires inside South Carolina
-        const fires = csvRows.slice(1)
-            .filter(row => row.trim() !== "")
-            .map(row => {
-                const columns = row.split(",");
-                const latitude = parseFloat(columns[1]);
-                const longitude = parseFloat(columns[2]);
-
-                if (!latitude || !longitude) return null;
-
-                const firePoint = turf.point([longitude, latitude]);
-                if (!turf.booleanPointInPolygon(firePoint, southCarolinaPolygon)) return null; //keep only fires inside SC
-
-                return {
-                    latitude,
-                    longitude,
-                    brightness: parseFloat(columns[3]) || null,
-                    confidence: columns[10] || "Unknown",
-                    acq_date: columns[6] || "Unknown",
-                    acq_time: columns[7] || "Unknown",
-                    satellite: columns[8] || "Unknown",
-                    frp: parseFloat(columns[13]) || null,
-                    daynight: columns[14] === "D" ? "Daytime" : "Nighttime"
-                };
-            })
-            .filter(fire => fire !== null); //store only valid SC fires
-
-        //delete old fire data before inserting new data
-        console.log("Clearing old fire data...");
-        await pool.query("DELETE FROM fires");
-
-        console.log(`Inserting ${fires.length} new fire records...`);
-        const insertQuery = `
-            INSERT INTO fires (latitude, longitude, brightness, confidence, acq_date, acq_time, satellite, frp, daynight)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        `;
-
-        for (const fire of fires) {
-            await pool.query(insertQuery, [
-                fire.latitude,
-                fire.longitude,
-                fire.brightness,
-                fire.confidence,
-                fire.acq_date,
-                fire.acq_time,
-                fire.satellite,
-                fire.frp,
-                fire.daynight
-            ]);
-        }
-
-        console.log(`Successfully updated fire data.`);
-        return fires;
-    } catch (error) {
-        console.error("Error fetching fire data:", error.message);
-        return [];
+    if (typeof response.data !== "string") {
+      throw new Error("Invalid response format from API");
     }
+
+    const csvRows = response.data.trim().split(/\r?\n/);
+    const header = csvRows[0]?.split(",") ?? [];
+    //sanity check a couple of expected headers
+    if (header[0] !== "latitude" || header[1] !== "longitude") {
+      console.warn("Unexpected CSV header. First two columns:", header[0], header[1]);
+    }
+
+    const fires = csvRows.slice(1)
+      .filter(row => row.trim() !== "")
+      .map(row => {
+        const c = row.split(",");
+        const latitude  = Number(c[0]);
+        const longitude = Number(c[1]);
+
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+
+        const pt = turf.point([longitude, latitude]);
+        if (!turf.booleanPointInPolygon(pt, scPolygon)) return null;
+
+        const frp = Number(c[11]);
+        return {
+          latitude,
+          longitude,
+          brightness: Number(c[2]) || null,      
+          confidence: c[8] || "Unknown",
+          acq_date: c[5] || null,
+          acq_time: c[6] || null,
+          satellite: c[7] || null,
+          frp: Number.isFinite(frp) ? frp : null,
+          daynight: c[12] === "D" ? "Daytime" : "Nighttime"
+        };
+      })
+      .filter(Boolean);
+
+    console.log(`Found ${fires.length} SC fires in feed`);
+    console.log("Clearing old fire data...");
+      
+    await pool.query("DELETE FROM fires");
+
+    console.log(`Inserting ${fires.length} new fire records...`);
+    const insert = `
+      INSERT INTO fires (latitude, longitude, brightness, confidence, acq_date, acq_time, satellite, frp, daynight)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+    `;
+    for (const f of fires) {
+      await pool.query(insert, [
+        f.latitude, f.longitude, f.brightness, f.confidence,
+        f.acq_date, f.acq_time, f.satellite, f.frp, f.daynight
+      ]);
+    }
+
+    console.log("Successfully updated fire data.");
+    return fires;
+  } catch (err) {
+    console.error("Error fetching fire data:", err.message);
+    return [];
+  }
 }
 
 module.exports = { fetchFireData };
