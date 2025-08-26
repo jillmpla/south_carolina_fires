@@ -30,15 +30,15 @@ The **South Carolina Wildfire Dashboard** is a real-time web application that mo
 ---
 
 ## 🌟 Features
--🛰️ **NASA FIRMS integration** – Fetches satellite-detected fire data.
--🔥 **Live wildfire monitoring** – Displays active fires in South Carolina.
--🗺️ **Interactive Map** – Shows fire locations, intensity, and details.
--📊 **Quick Stats sidebar** – Shows active fire counts.
--🌓 **Light/Dark mode** – Accessible, high-contrast palette.
--📱 **Adaptive layout** – Responsive grid; sidebar auto-sizes.
--🕒 **24-hour browser cache** – Limits API calls.
--🔄 **Automated Backend Updates** – Fetches new data daily and updates Supabase.
--⚡ **Deployed on Vercel** – Ensures fast loading times and seamless updates.
+- 🛰️ **NASA FIRMS integration** – Fetches satellite-detected fire data.
+- 🔥 **Live wildfire monitoring** – Displays active fires in South Carolina.
+- 🗺️ **Interactive Map** – Shows fire locations, intensity, and details.
+- 📊 **Quick Stats sidebar** – Shows active fire counts.
+- 🌓 **Light/Dark mode** – Accessible, high-contrast palette.
+- 📱 **Adaptive layout** – Responsive grid; sidebar auto-sizes.
+- 🕒 **24-hour browser cache** – Limits API calls.
+- 🔄 **Automated Backend Updates** – Fetches new data daily and updates Supabase.
+- ⚡ **Deployed on Vercel** – Ensures fast loading times and seamless updates.
 
 ---
 
