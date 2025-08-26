@@ -178,7 +178,7 @@ const FireMap = ({ onStatsChange }) => {
                         <div role="dialog" aria-label="Fire details" className="popup-content">
                             <div className="popup-title">
                                 <img src="/logo512.png" alt="" aria-hidden="true" className="popup-icon" />
-                                <strong>Fire detection</strong>
+                                <strong>Fire Detection</strong>
                             </div>
 
                             <ul className="popup-list">
