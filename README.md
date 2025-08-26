@@ -16,9 +16,10 @@ The **South Carolina Wildfire Dashboard** is a real-time web application that mo
 
 ### **Backend:**
 - **Node.js & Express.js** – For handling API requests.
-- **NASA FIRMS (Fire Information for Resource Management System)** provides satellite-based fire detection data from multiple Earth-observing satellites.
-    - Uses **VIIRS (Visible Infrared Imaging Radiometer Suite)** on **Suomi NPP (N)** and **NOAA-20 (J)** satellites, and **MODIS (Moderate Resolution Imaging Spectroradiometer)** on **Terra (T)** and **Aqua(A)** satellites.
-    - The data includes **fire coordinates, brightness temperature, confidence levels, and Fire Radiative Power (FRP)**, which measures the intensity of detected fires.
+- **NASA FIRMS (Fire Information for Resource Management System)** provides satellite-based fire detection data from multiple Earth-observing satellites.  
+    - Currently ingests **VIIRS (Visible Infrared Imaging Radiometer Suite)** data from **Suomi NPP (S-NPP)** and **NOAA-20** satellites.  
+    - Each detection includes **coordinates, brightness temperature, confidence level, acquisition date/time, satellite source, Fire Radiative Power (FRP)**, and **day/night flag**.  
+    - Data is spatially filtered to **South Carolina**, de-duplicated across satellites, and stored historically in a Postgres database.
 
 ### **Database & Hosting:**
 - **Supabase (PostgreSQL)** – Stores fire data and serves it via an API.
