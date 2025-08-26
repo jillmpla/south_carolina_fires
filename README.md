@@ -91,16 +91,17 @@ Example response:
 {
   "fires": [
     {
-      "id": 8760,
-      "latitude": 34.5765,
-      "longitude": -82.7109,
-      "brightness": 329.6,
-      "confidence": "VIIRS",
-      "acq_date": "2025-08-25",
-      "acq_time": "814",
+      "id": 8857,
+      "latitude": 33.2795,
+      "longitude": -80.4287,
+      "brightness": 301.85,
+      "confidence": "n",
+      "acq_date": "2025-08-26",
+      "acq_time": "756",
       "satellite": "N20",
-      "frp": 288.7,
-      "daynight": "Nighttime"
+      "frp": 0.73,
+      "daynight": "Nighttime",
+      "acq_ts": "2025-08-26T07:56:00.000Z"
     }
   ]
 }
