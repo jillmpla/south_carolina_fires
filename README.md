@@ -1,7 +1,7 @@
 # 🌲South Carolina Wildfire Dashboard🔥
 
 ## Overview
-The **South Carolina Wildfire Dashboard** is a real-time web application that monitors wildfire activity across South Carolina. It fetches and displays fire data using **NASA FIRMS** (Fire Information for Resource Management System), allowing users to visualize fire locations, intensity, and other key details on an interactive map.
+The **South Carolina Wildfire Dashboard** is a real-time dashboard that monitors wildfire activity across South Carolina using NASA FIRMS data. It visualizes active fire locations, intensity (FRP), and other key details on an interactive map.
 
 🚀 **Live Demo:** [South Carolina Wildfire Dashboard](https://southcarolinafires.com/)
 
