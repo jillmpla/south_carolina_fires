@@ -11,14 +11,15 @@ The **South Carolina Wildfire Dashboard** is a real-time web application that mo
 
 ### **Frontend:**
 - **React.js** – For building the interactive UI.
-- **Leaflet.js** – For rendering fire markers on the map.
+- **React-Leaflet (Leaflet)** – React map components powered by Leaflet.
+- **OpenStreetMap tiles** – Base map layer provider.
 - **Axios** – For making API requests.
 
 ### **Backend:**
 - **Node.js & Express.js** – For handling API requests.
 - **NASA FIRMS (Fire Information for Resource Management System)** provides satellite-based fire detection data from multiple Earth-observing satellites.  
     - Currently ingests VIIRS (Visible Infrared Imaging Radiometer Suite) data from **Suomi NPP (S-NPP)** and **NOAA-20** satellites.  
-    - Each detection includes coordinates, brightness temperature, confidence level, acquisition date/time, satellite source, Fire Radiative Power (FRP), and day/night flag.  
+    - Each detection includes coordinates, brightness temperature, acquisition date/time, satellite source, Fire Radiative Power (FRP), and day/night flag.  
     - Data is spatially filtered to **South Carolina**, de-duplicated across satellites, and stored historically in a Postgres database.
 
 ### **Database & Hosting:**
@@ -29,9 +30,13 @@ The **South Carolina Wildfire Dashboard** is a real-time web application that mo
 ---
 
 ## 🌟 Features
+🛰️ **NASA FIRMS integration** – Fetches satellite-detected fire data. 
 🔥 **Live wildfire monitoring** – Displays active fires in South Carolina.  
-🛰️ **NASA FIRMS integration** – Fetches satellite-detected fire data.  
 🗺️ **Interactive Map** – Shows fire locations, intensity, and details.  
+📊 **Quick Stats sidebar** – Shows active fire counts.
+🌓 **Light/Dark mode** – Accessible, high-contrast palette.  
+📱 **Adaptive layout** – Responsive grid; sidebar auto-sizes.  
+🕒 **24-hour browser cache** – Limits API calls. 
 🔄 **Automated Backend Updates** – Fetches new data daily and updates Supabase.  
 ⚡ **Deployed on Vercel** – Ensures fast loading times and seamless updates.
 
@@ -86,15 +91,15 @@ Example response:
 {
   "fires": [
     {
-      "id": 2718,
-      "latitude": 34.7839,
-      "longitude": -83.1262,
-      "brightness": 307.43,
-      "confidence": "n",
-      "acq_date": "2025-03-04",
-      "acq_time": "711",
-      "satellite": "N",
-      "frp": 1.41,
+      "id": 8760,
+      "latitude": 34.5765,
+      "longitude": -82.7109,
+      "brightness": 329.6,
+      "confidence": "VIIRS",
+      "acq_date": "2025-08-25",
+      "acq_time": "814",
+      "satellite": "N20",
+      "frp": 288.7,
       "daynight": "Nighttime"
     }
   ]
