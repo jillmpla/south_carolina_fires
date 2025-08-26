@@ -52,7 +52,7 @@ app.get("/api/fires", async (req, res) => {
 });
 
 //---- Route: trigger update from NASA FIRMS -------------------------------
-/* app.get("/api/update-fires", async (req, res) => {
+app.get("/api/update-fires", async (req, res) => {
   try {
     console.log("Updating fire data from NASA FIRMS...");
     if (!fetchFireData) throw new Error("fetchFireData is not defined!");
@@ -62,17 +62,6 @@ app.get("/api/fires", async (req, res) => {
   } catch (error) {
     console.error("Error updating fire data:", error);
     res.status(500).json({ error: error.message });
-  }
-}); */
-
-app.get("/api/update-fires", async (req, res) => {
-  try {
-    if (!fetchFireData) throw new Error("fetchFireData is not defined!");
-    const result = await fetchFireData(); 
-    res.json(result);
-  } catch (error) {
-    console.error("Error updating fire data:", error);
-    res.status(500).json({ error: error.message, stack: error.stack });
   }
 });
 
