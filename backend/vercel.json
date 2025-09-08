@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/fires",
+      "dest": "/backend/api/fires.js"
+    },
+    {
+      "src": "/api/update-fires",
+      "dest": "/backend/api/fires.js"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/update-fires",
+      "schedule": "0 19 * * *"
+    }
+  ]
+}
