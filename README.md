@@ -57,7 +57,7 @@ npm install
 ```
 For the frontend:
 ```shell
-cd frontend
+cd ../frontend
 npm install
 ```
 ### **3️⃣ Set Up Environment Variables**
@@ -79,7 +79,7 @@ node server.js
 ```
 Start the frontend:
 ```shell
-cd frontend
+cd ../frontend
 npm start
 ```
 ## 📡 API Usage
@@ -109,7 +109,7 @@ Example response:
 ```
 To manually fetch and update fire data:
 ```shell
-GET /api/update-fires?key=YOUR_CRON_SECRET
+GET /api/update-fires?key=your_long_random_secret
 ```
 
 ## 📜 License
