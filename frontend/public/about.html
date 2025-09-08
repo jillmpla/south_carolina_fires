@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About — South Carolina Fires</title>
+    <meta name="description" content="About South Carolina Fires and its creator, Jill Platts." />
+    <link rel="canonical" href="https://southcarolinafires.com/about.html" />
+    <link rel="stylesheet" href="aboutprivacy.css" />
+</head>
+<body>
+<header class="site-header" role="banner">
+    <div class="container">
+        <h1 class="site-title">About</h1>
+    </div>
+</header>
+
+<main class="page" role="main">
+    <div class="container">
+        <header class="page-header">
+            <p class="muted"><a href="/">← Home</a></p>
+            <h1>South Carolina Fires</h1>
+            <p class="lead">A simple, accessible dashboard for fire activity across the state.</p>
+        </header>
+
+        <section class="card">
+            <h2>Welcome</h2>
+            <p><strong>South Carolina Fires</strong> was built to make it easier to track and understand fire activity in South Carolina. The site pulls data from NASA FIRMS and presents recent fire detections in a clear, accessible way.</p>
+        </section>
+
+        <section class="card">
+            <h2>About Me</h2>
+            <p>Hi, I'm <strong>Jill Platts</strong>, a developer and educator who loves combining technology and design to make small, meaningful projects. This site is a personal project created to provide timely and accessible fire information for the public.</p>
+        </section>
+    </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+    <div class="container">
+        <p>&copy; <span id="year"></span> <a href="https://southcarolinafires.com">South Carolina Fires</a> · <a href="/privacy.html">Privacy</a></p>
+    </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

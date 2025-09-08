@@ -1,0 +1,174 @@
+/* =========================================================
+   BASE
+   ========================================================= */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+html { color-scheme: light dark; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    line-height: 1.7;
+    color: #0e1525;
+    background: #0b1220;
+}
+
+:focus-visible { outline: 3px solid #7cc4ff; outline-offset: 2px; }
+
+.container { max-width: 1100px; margin-inline: auto; padding: 0 1rem; }
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.site-header {
+    flex: 0 0 auto;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(11,18,32,0.9), rgba(11,18,32,0.5));
+    backdrop-filter: saturate(120%) blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 0.75rem 0;
+}
+
+.site-title {
+    margin: 0;
+    padding: 0.25rem 0;
+    color: #f5f7ff;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   PAGES
+   ========================================================= */
+.page {
+    flex: 1 1 auto;
+    background: #0b1220;
+}
+
+.page .container {
+    max-width: 820px;
+    padding: 2.5rem 1.5rem 3.5rem;
+}
+
+/* Headings */
+.page h1,
+.page h2,
+.page h3 {
+    color: #f5f7ff;
+    margin: 0 0 1rem;
+    line-height: 1.3;
+}
+.page h1 { font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem); font-weight: 800; letter-spacing: .5px; }
+.page h2 { font-size: clamp(1.3rem, 1rem + 1.2vw, 1.8rem); margin-top: 2rem; font-weight: 700; }
+.page h3 { font-size: 1.2rem; margin-top: 1.5rem; font-weight: 700; }
+
+/* Text */
+.page p,
+.page li {
+    color: #cfd9ff;
+    font-size: 1.15rem;
+}
+.page p { margin: 0 0 1.25rem; }
+.page .lead {
+    color: #e6ebff;
+    font-size: 1.25rem;
+    opacity: .95;
+}
+
+/* Links */
+.page a {
+    color: #bcd2ff;
+    text-decoration: underline dotted rgba(188,210,255,.6);
+    text-underline-offset: 2px;
+}
+.page a:hover { text-decoration-style: solid; }
+
+/* Lists & rules */
+.page ul, .page ol { padding-left: 1.5rem; margin: .25rem 0 1.25rem; }
+.page hr {
+    border: 0;
+    border-top: 1px solid rgba(255,255,255,.12);
+    margin: 2.25rem 0;
+}
+
+/* Card sections */
+.page .card {
+    background: rgba(15,17,27,.55);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    padding: 1.5rem 1.5rem;
+    margin: 1.25rem 0 1.5rem;
+}
+
+/* Muted text */
+.page .muted { color: #aebcf7; opacity: .9; font-size: 1rem; }
+
+.page code, .page kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 1em;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: .35rem;
+    padding: .1rem .3rem;
+}
+.page pre {
+    background: rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    color: #e8eeff;
+}
+
+/* Page header divider */
+.page .page-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+    color: #dfe7ff;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer {
+    flex: 0 0 auto;
+    background: #0a1020;
+    color: #e8eeff;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding: 0.75rem 0;
+    font-size: 1rem;
+}
+
+.site-footer .container {
+    min-height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-footer p {
+    margin: 0;
+    color: #e8eeff;
+}
+
+.site-footer a {
+    color: #bcd2ff;
+    text-decoration: none;
+}
+.site-footer a:hover { text-decoration: underline; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 600px) {
+    .site-title { font-size: 1.2rem; }
+}
+

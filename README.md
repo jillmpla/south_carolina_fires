@@ -1,9 +1,9 @@
-# 🌲South Carolina Wildfire Dashboard🔥
+# 🌲South Carolina Fire Dashboard🔥
 
 ## Overview
-The **South Carolina Wildfire Dashboard** is a real-time dashboard that monitors wildfire activity across South Carolina using NASA FIRMS data. It visualizes active fire locations, intensity (FRP), and other key details on an interactive map.
+The **South Carolina Fire Dashboard** is a real-time dashboard that monitors fire activity across South Carolina using NASA FIRMS data. It visualizes active fire locations, intensity (FRP), and other key details on an interactive map.
 
-🚀 **Live Demo:** [South Carolina Wildfire Dashboard](https://southcarolinafires.com/)
+🚀 **Live Demo:** [South Carolina Fire Dashboard](https://southcarolinafires.com/)
 
 ---
 
@@ -31,14 +31,14 @@ The **South Carolina Wildfire Dashboard** is a real-time dashboard that monitors
 
 ## 🌟 Features
 - 🛰️ **NASA FIRMS integration** – Fetches satellite-detected fire data.
-- 🔥 **Live wildfire monitoring** – Displays active fires in South Carolina.
+- 🔥 **Live fire monitoring** – Displays active fires in South Carolina.
 - 🗺️ **Interactive Map** – Shows fire locations, intensity, and details.
 - 📊 **Quick Stats sidebar** – Shows active fire counts.
 - 🌓 **Light/Dark mode** – Accessible, high-contrast palette.
 - 📱 **Adaptive layout** – Responsive grid; sidebar auto-sizes.
-- 🕒 **Daily cache** – Data cached until the next update run.
-- 🔄 **Daily updates** – Vercel Cron job refreshes data in Supabase.
 - ⚡ **Deployed on Vercel** – Ensures fast loading times and seamless updates.
+- 🔄 **Daily updates** – Vercel Cron job refreshes data in Supabase.
+- 🕒 **Daily cache** – Data cached until the next update run.
 
 ---
 

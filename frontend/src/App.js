@@ -31,10 +31,10 @@ function App() {
                 <h1>
                     <img
                         src="/logo512.png"
-                        alt="Wildfire Dashboard logo"
+                        alt="Fire Dashboard logo"
                         className="title-icon"
                     />
-                    South Carolina Wildfire Dashboard
+                    South Carolina Fire Dashboard
                 </h1>
 
                 <button
@@ -49,7 +49,7 @@ function App() {
             {/* MAIN */}
             <main className="app-main" role="main">
                 {/* SIDEBAR */}
-                <aside className="sidebar" aria-label="Sidebar with wildfire quick stats">
+                <aside className="sidebar" aria-label="Sidebar with fire quick stats">
 
                     <section aria-labelledby="stats-heading">
                         <h3 id="stats-heading" className="sidebar-subhead">QUICK STATS</h3>
@@ -130,7 +130,7 @@ function App() {
                 <section
                     id="map"
                     className="map-section"
-                    aria-label="Interactive wildfire map of South Carolina"
+                    aria-label="Interactive fire map of South Carolina"
                 >
                     <FireMap onStatsChange={onStatsChange} darkMode={darkMode} />
                 </section>
@@ -145,8 +145,12 @@ function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        South Carolina Wildfire Dashboard
-                    </a>
+                        South Carolina Fire Dashboard
+                    </a>{" "}
+                    <span style={{ margin: "0 0.5rem", fontWeight: "bold" }}>•</span>{" "}
+                    <a href="/about.html">About</a>{" "}
+                    <span style={{ margin: "0 0.5rem", fontWeight: "bold" }}>•</span>{" "}
+                    <a href="/privacy.html">Privacy</a>
                 </p>
             </footer>
         </div>

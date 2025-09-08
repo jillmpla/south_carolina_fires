@@ -236,7 +236,7 @@ const FireMap = ({ onStatsChange, darkMode = false }) => {
             style={{ height: "100%", width: "100%" }}
             maxBounds={southCarolinaBounds}
             maxBoundsViscosity={0.8}
-            aria-label="Leaflet map showing active wildfire detections"
+            aria-label="Leaflet map showing active fire detections"
             role="region"
             preferCanvas={true}
         >
