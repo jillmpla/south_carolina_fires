@@ -20,7 +20,7 @@ The **South Carolina Fire Dashboard** is a real-time dashboard that monitors fir
 - **NASA FIRMS (Fire Information for Resource Management System)** provides satellite-based fire detection data from multiple Earth-observing satellites.  
     - Currently ingests VIIRS (Visible Infrared Imaging Radiometer Suite) data from **Suomi NPP (S-NPP)** and **NOAA-20** satellites.  
     - Each detection includes lat/long, brightness, UTC date/time, satellite & instrument, confidence, FRP, and day/night.
-    - Data is spatially filtered to **South Carolina**, de-duplicated across satellites, and stored historically in a Postgres database.
+    - Data is spatially filtered to **South Carolina**, de-duplicated across satellites, and stored as a daily snapshot in a Postgres database.
 
 ### **Database & Hosting:**
 - **Supabase (PostgreSQL)** – Stores fire data and serves it via an API.
