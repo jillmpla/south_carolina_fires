@@ -99,7 +99,6 @@ app.get("/api/update-fires", async (req, res) => {
         );
 
         if (!authorized) {
-            //debug info
             console.warn("Unauthorized update-fires call", {
                 hasAuthHeader: Boolean(authHeader),
                 headerLen: headerToken?.length ?? 0,
@@ -110,11 +109,17 @@ app.get("/api/update-fires", async (req, res) => {
         }
 
         console.log("Updating fire data from NASA FIRMS...");
-        const fires = await fetchFireData(); //pulls fresh data into DB
 
+        //wipe existing rows, so we only keep the newest snapshot
+        await pool.query(`TRUNCATE TABLE fires RESTART IDENTITY`);
+
+        //pull fresh data into DB
+        const fires = await fetchFireData();
+
+        res.setHeader("Cache-Control", "no-store");
         res.setHeader("Content-Type", "application/json; charset=utf-8");
         res.json({
-            message: "Fire data updated",
+            message: "Fire data updated (daily snapshot)",
             fetchedInsideSC: fires.length,
             schedule: "Triggered by Vercel cron at 19:00 UTC (daily)"
         });

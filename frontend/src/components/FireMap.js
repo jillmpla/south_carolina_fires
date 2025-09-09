@@ -179,8 +179,8 @@ const FireMap = ({ onStatsChange, darkMode = false }) => {
         if (!dateStr && !timeStr) return "Unknown";
 
         const yyyy = dateStr?.slice(0, 4);
-        const mm = dateStr?.slice(5, 7);
-        const dd = dateStr?.slice(8, 10);
+        const mm   = dateStr?.slice(5, 7);
+        const dd   = dateStr?.slice(8, 10);
 
         const date = new Date(Date.UTC(
             yyyy,
@@ -190,15 +190,21 @@ const FireMap = ({ onStatsChange, darkMode = false }) => {
             Number(timeStr?.slice(2, 4) || 0)
         ));
 
-        return date.toLocaleString("en-US", {
+        const d = date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            timeZone: "UTC",
-            timeZoneName: "short"
+            timeZone: "UTC"
         });
+
+        const t = date.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+            timeZone: "UTC"
+        });
+
+        return `${d}, ${t} UTC`;
     };
 
     const formatCoord = (v) => (v || v === 0 ? Number(v).toFixed(2) : "—");
