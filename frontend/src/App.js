@@ -34,7 +34,7 @@ function App() {
                         alt="Fire Dashboard logo"
                         className="title-icon"
                     />
-                    South Carolina Fire Dashboard
+                    South Carolina Fires
                 </h1>
 
                 <button
@@ -145,7 +145,7 @@ function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        South Carolina Fire Dashboard
+                        South Carolina Fires
                     </a>{" "}
                     <span style={{ margin: "0 0.5rem", fontWeight: "bold" }}>•</span>{" "}
                     <a href="/about.html">About</a>{" "}
