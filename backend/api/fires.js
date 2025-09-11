@@ -31,6 +31,17 @@ app.get("/api/fires", async (req, res) => {
                 ? Math.max(1, Math.min(5000, parseInt(rawLimit, 10)))
                 : 500;
 
+        const ROLLOVER_HOUR_UTC = 19; //daily refresh boundary (19:00 UTC)
+        const now = new Date();
+
+        let opStart = new Date(Date.UTC(
+            now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+            ROLLOVER_HOUR_UTC, 0, 0, 0
+        ));
+        if (now < opStart) {
+            opStart.setUTCDate(opStart.getUTCDate() - 1);
+        }
+
         let sql = `
             SELECT
                 id,
@@ -50,6 +61,9 @@ app.get("/api/fires", async (req, res) => {
         if (hours) {
             params.push(hours);
             sql += ` WHERE acq_ts >= NOW() - ($${params.length} || ' hours')::interval`;
+        } else {
+            params.push(opStart.toISOString());
+            sql += ` WHERE acq_ts >= $${params.length}`;
         }
 
         sql += ` ORDER BY acq_ts DESC`;
@@ -59,7 +73,6 @@ app.get("/api/fires", async (req, res) => {
         const { rows } = await pool.query(sql, params);
 
         //cache until the next scheduled run at 19:00 UTC (daily)
-        const now = new Date();
         const next1900UTC = new Date(Date.UTC(
             now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 19, 0, 0, 0
         ));
@@ -71,7 +84,14 @@ app.get("/api/fires", async (req, res) => {
         res.setHeader("Cache-Control", `public, max-age=${maxAge}, must-revalidate`);
         res.setHeader("Expires", next1900UTC.toUTCString());
         res.setHeader("Content-Type", "application/json; charset=utf-8");
-        res.json({ fires: rows, count: rows.length });
+        res.json({
+            fires: rows,
+            count: rows.length,
+            meta: {
+                window: hours ? `${hours}h` : `op-day-from-${opStart.toISOString()}`,
+                rollover_utc_hour: ROLLOVER_HOUR_UTC
+            }
+        });
 
     } catch (error) {
         console.error("Database Error:", error);
@@ -130,4 +150,5 @@ app.get("/api/update-fires", async (req, res) => {
 });
 
 module.exports = app;
+
 
