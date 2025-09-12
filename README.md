@@ -20,12 +20,11 @@ The **South Carolina Fire Dashboard** is a real-time dashboard that monitors fir
 - **NASA FIRMS (Fire Information for Resource Management System)** provides satellite-based fire detection data from multiple Earth-observing satellites.  
     - Currently ingests VIIRS (Visible Infrared Imaging Radiometer Suite) data from **Suomi NPP (S-NPP)** and **NOAA-20** satellites.  
     - Each detection includes lat/long, brightness, UTC date/time, satellite & instrument, confidence, FRP, and day/night.
-    - Data is spatially filtered to **South Carolina**, de-duplicated across satellites, and stored as a daily snapshot in a Postgres database.
+    - Data is spatially filtered to South Carolina, de-duplicated as needed, and kept in a rolling 48-hour window in Postgres (older rows are pruned automatically).
 
 ### **Database & Hosting:**
-- **Supabase (PostgreSQL)** – Stores fire data and serves it via an API.
-- **Vercel** – Hosts both the backend (API) and frontend.
-- **Vercel Cron job** – Runs once daily to fetch and store new data.
+- **Supabase (PostgreSQL)** – Stores fire data, serves it via an API, and automatically prunes rows older than ~72 hours (keeping the latest 48 hours visible with a buffer).
+- **Vercel** – Hosts both the backend (API) and frontend, with a daily cron job to fetch new data.
 
 ---
 
@@ -37,8 +36,7 @@ The **South Carolina Fire Dashboard** is a real-time dashboard that monitors fir
 - 🌓 **Light/Dark mode** – Accessible, high-contrast palette.
 - 📱 **Adaptive layout** – Responsive grid; sidebar auto-sizes.
 - ⚡ **Deployed on Vercel** – Ensures fast loading times and seamless updates.
-- 🔄 **Daily updates** – Vercel Cron job refreshes data in Supabase.
-- 🕒 **Daily cache** – Data cached until the next update run.
+- 🔄 **Daily refresh** - Vercel Cron fetches new detections once per day and prunes old rows.
 
 ---
 
@@ -85,10 +83,11 @@ npm start
 ## 📡 API Usage
 The backend API serves fire data at:
 ```shell
-GET /api/fires
+GET /api/fires?hours=48&limit=500
 ```
 Example response:
 ```shell
+{
 {
   "fires": [
     {
@@ -98,13 +97,20 @@ Example response:
       "brightness": 301.85,
       "confidence": "n",
       "acq_date": "2025-08-26",
-      "acq_time": "756",
+      "acq_time": "0756",
       "satellite": "N20",
       "frp": 0.73,
-      "daynight": "Nighttime",
+      "daynight": "N",
       "acq_ts": "2025-08-26T07:56:00.000Z"
     }
-  ]
+  ],
+  "count": 1,
+  "meta": {
+    "mode": "latest-available",
+    "start_utc": "2025-08-24T07:56:00.000Z",
+    "end_utc": "2025-08-26T07:56:00.000Z",
+    "lookback_hours": 48
+  }
 }
 ```
 To manually fetch and update fire data:

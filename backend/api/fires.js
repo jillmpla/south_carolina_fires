@@ -23,24 +23,29 @@ app.get("/api/fires", async (req, res) => {
 
         const hours =
             rawHours !== undefined && !Number.isNaN(parseInt(rawHours, 10))
-                ? Math.max(1, Math.min(24 * 30, parseInt(rawHours, 10)))
-                : null;
+                ? Math.max(1, Math.min(48, parseInt(rawHours, 10)))
+                : 48;
 
         const limit =
             rawLimit !== undefined && !Number.isNaN(parseInt(rawLimit, 10))
                 ? Math.max(1, Math.min(5000, parseInt(rawLimit, 10)))
                 : 500;
 
-        const ROLLOVER_HOUR_UTC = 19; //daily refresh boundary (19:00 UTC)
-        const now = new Date();
+        const { rows: maxRows } = await pool.query(`SELECT MAX(acq_ts) AS max FROM fires`);
+        const maxTs = maxRows[0]?.max ? new Date(maxRows[0].max) : null;
 
-        let opStart = new Date(Date.UTC(
-            now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-            ROLLOVER_HOUR_UTC, 0, 0, 0
-        ));
-        if (now < opStart) {
-            opStart.setUTCDate(opStart.getUTCDate() - 1);
+        if (!maxTs) {
+            res.setHeader("Cache-Control", "no-store");
+            res.setHeader("Content-Type", "application/json; charset=utf-8");
+            return res.json({
+                fires: [],
+                count: 0,
+                meta: { reason: "no-data", lookback_hours: hours }
+            });
         }
+
+        const end = maxTs;
+        const start = new Date(end.getTime() - hours * 3600 * 1000);
 
         let sql = `
             SELECT
@@ -55,41 +60,25 @@ app.get("/api/fires", async (req, res) => {
                 frp,
                 daynight,
                 acq_ts
-            FROM fires`;
-        const params = [];
+            FROM fires
+            WHERE acq_ts >= $1 AND acq_ts < $2
+            ORDER BY acq_ts DESC
+            LIMIT $3`;
 
-        if (hours) {
-            params.push(hours);
-            sql += ` WHERE acq_ts >= NOW() - ($${params.length} || ' hours')::interval`;
-        } else {
-            params.push(opStart.toISOString());
-            sql += ` WHERE acq_ts >= $${params.length}`;
-        }
-
-        sql += ` ORDER BY acq_ts DESC`;
-        params.push(limit);
-        sql += ` LIMIT $${params.length}`;
+        const params = [start.toISOString(), end.toISOString(), limit];
 
         const { rows } = await pool.query(sql, params);
 
-        //cache until the next scheduled run at 19:00 UTC (daily)
-        const next1900UTC = new Date(Date.UTC(
-            now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 19, 0, 0, 0
-        ));
-        if (now >= next1900UTC) {
-            next1900UTC.setUTCDate(next1900UTC.getUTCDate() + 1);
-        }
-        const maxAge = Math.max(0, Math.floor((next1900UTC - now) / 1000));
-
-        res.setHeader("Cache-Control", `public, max-age=${maxAge}, must-revalidate`);
-        res.setHeader("Expires", next1900UTC.toUTCString());
+        res.setHeader("Cache-Control", "no-store");
         res.setHeader("Content-Type", "application/json; charset=utf-8");
         res.json({
             fires: rows,
             count: rows.length,
             meta: {
-                window: hours ? `${hours}h` : `op-day-from-${opStart.toISOString()}`,
-                rollover_utc_hour: ROLLOVER_HOUR_UTC
+                mode: "latest-available",
+                start_utc: start.toISOString(),
+                end_utc: end.toISOString(),
+                lookback_hours: hours
             }
         });
 
@@ -100,12 +89,10 @@ app.get("/api/fires", async (req, res) => {
 });
 
 //GET /api/update-fires
-//scheduled in vercel.json to run ONCE DAILY at 19:00 UTC
 app.get("/api/update-fires", async (req, res) => {
     try {
         const cronSecret = process.env.CRON_SECRET;
 
-        //accept either Authorization header (Vercel cron) or ?key=... (manual)
         const authHeader = req.headers["authorization"];
         const headerToken = authHeader?.startsWith("Bearer ")
             ? authHeader.slice("Bearer ".length)
@@ -130,17 +117,18 @@ app.get("/api/update-fires", async (req, res) => {
 
         console.log("Updating fire data from NASA FIRMS...");
 
-        //wipe existing rows, so we only keep the newest snapshot
-        await pool.query(`TRUNCATE TABLE fires RESTART IDENTITY`);
+        await pool.query(`DELETE FROM fires WHERE acq_ts < NOW() - INTERVAL '72 hours'`);
 
-        //pull fresh data into DB
-        const fires = await fetchFireData();
+        const result = await fetchFireData();
+        const fetchedLength = Array.isArray(result) ? result.length : (result?.fetched ?? 0);
+        const insertedCount = result?.inserted ?? null;
 
         res.setHeader("Cache-Control", "no-store");
         res.setHeader("Content-Type", "application/json; charset=utf-8");
         res.json({
             message: "Fire data updated (daily snapshot)",
-            fetchedInsideSC: fires.length,
+            fetchedInsideSC: fetchedLength,
+            inserted: insertedCount,
             schedule: "Triggered by Vercel cron at 19:00 UTC (daily)"
         });
     } catch (error) {
@@ -150,5 +138,3 @@ app.get("/api/update-fires", async (req, res) => {
 });
 
 module.exports = app;
-
-
