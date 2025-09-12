@@ -88,30 +88,29 @@ GET /api/fires?hours=48&limit=500
 Example response:
 ```shell
 {
-{
   "fires": [
     {
-      "id": 8857,
-      "latitude": 33.2795,
-      "longitude": -80.4287,
-      "brightness": 301.85,
+      "id": 26,
+      "latitude": 32.75765,
+      "longitude": -80.70053,
+      "brightness": 329.96,
       "confidence": "n",
-      "acq_date": "2025-08-26",
-      "acq_time": "0756",
-      "satellite": "N20",
-      "frp": 0.73,
-      "daynight": "N",
-      "acq_ts": "2025-08-26T07:56:00.000Z"
+      "acq_date": "2025-09-12",       
+      "acq_time": "1834",             
+      "satellite": "N",
+      "frp": 2.66,
+      "daynight": "N",                
+      "acq_ts": "2025-09-12T18:34:00.000Z"
     }
   ],
   "count": 1,
   "meta": {
     "mode": "latest-available",
-    "start_utc": "2025-08-24T07:56:00.000Z",
-    "end_utc": "2025-08-26T07:56:00.000Z",
+    "start_utc": "2025-09-10T18:56:00.000Z",
+    "end_utc": "2025-09-12T18:56:00.000Z",
     "lookback_hours": 48
   }
-}
+}	
 ```
 To manually fetch and update fire data:
 ```shell
