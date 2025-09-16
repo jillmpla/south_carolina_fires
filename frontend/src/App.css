@@ -344,6 +344,26 @@ html, body {
 }
 
 /* ==========================================================================
+   ABOUT SECTION IN SIDEBAR
+   ========================================================================== */
+
+.hero-intro p.lead {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.hero-intro {
+    background: var(--panel-light);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.app-container.dark .hero-intro {
+    background: var(--panel-dark);
+}
+
+/* ==========================================================================
    MAP
    ========================================================================== */
 

@@ -51,6 +51,20 @@ function App() {
                 {/* SIDEBAR */}
                 <aside className="sidebar" aria-label="Sidebar with fire quick stats">
 
+                    {/* INTRO / ABOUT SECTION */}
+                    <section className="hero-intro" aria-labelledby="about-heading">
+                        <h3 id="about-heading" className="sidebar-subhead">ABOUT</h3>
+                        <p className="lead">
+                            View daily satellite fire detections across South Carolina, based on <abbr title="Fire Radiative Power">FRP</abbr>.
+                        </p>
+                        <p className="lead">
+                            Explore the interactive map to see fire locations, intensity levels, and daily totals.
+                        </p>
+                        <p className="lead">
+                            Switch between dark and light mode for easier viewing.
+                        </p>
+                    </section>
+
                     <section aria-labelledby="stats-heading">
                         <h3 id="stats-heading" className="sidebar-subhead">QUICK STATS</h3>
 
@@ -121,9 +135,8 @@ function App() {
                         </p>
                     </section>
 
-                    <section className="update-note" aria-label="Update notice">
-                        <p>Updates daily around 3 PM ET</p>
-                    </section>
+                    <section className="update-note" aria-label="Update notice"> <p>Updated daily.</p> </section>
+
                 </aside>
 
                 {/* MAP */}
